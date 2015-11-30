@@ -20,7 +20,8 @@ public class HttpPostRequestContext extends NettyRequestContext {
 
     private final HttpPostRequestDecoder decoder;
 
-    HttpPostRequestContext(HttpRequest request, Channel channel) {
+    HttpPostRequestContext(HttpRequest request,
+                           Channel channel) {
         super(request, channel);
         decoder = new HttpPostRequestDecoder(new DefaultHttpDataFactory(false), request);
     }

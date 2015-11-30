@@ -2,7 +2,11 @@ package com.qunar.hotel.api;
 
 import com.qunar.hotel.common.WebAppConstants;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,18 +24,19 @@ public class ResourceWebComponent implements WebComponent {
     }
 
     public void onRequest(RequestContext ctx) {
-        char[] uri = ctx.getRequestUri().toCharArray();
+        char[] uri = ctx.getRequestUri()
+                        .toCharArray();
         for (int i = 0; i < uri.length; i++) {
             if (i == '/') {
                 uri[i] = File.separatorChar;
             }
         }
-        File file = new File(resourceBase + new String(uri));
-        BufferedReader in = null;
+        File           file = new File(resourceBase + new String(uri));
+        BufferedReader in   = null;
         try {
             in = new BufferedReader(new FileReader(file));
             StringBuilder sb = new StringBuilder();
-            String str;
+            String        str;
             while ((str = in.readLine()) != null) {
                 sb.append(str);
             }

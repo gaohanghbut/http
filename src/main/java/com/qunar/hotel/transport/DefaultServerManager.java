@@ -20,7 +20,8 @@ public class DefaultServerManager implements ServerManager {
 
     public void serverStart(Configuration configuration) {
         Server server = ExtensionLoaders.getExtensionLoader(ServerFactory.class)
-                .getExtension().createServer(configuration, new EventDispatcherListener());
+                                        .getExtension()
+                                        .createServer(configuration, new EventDispatcherListener());
         this.server = server;
         try {
             logger.info("server is starting...");
@@ -34,7 +35,8 @@ public class DefaultServerManager implements ServerManager {
     public void serverStop() {
         if (server != null) {
             //destroy all web components
-            List<LifeCycleManager> extensions = ExtensionLoaders.getExtensionLoader(LifeCycleManager.class).getExtensions();
+            List<LifeCycleManager> extensions = ExtensionLoaders.getExtensionLoader(LifeCycleManager.class)
+                                                                .getExtensions();
             for (LifeCycleManager extension : extensions) {
                 extension.destroy();
             }

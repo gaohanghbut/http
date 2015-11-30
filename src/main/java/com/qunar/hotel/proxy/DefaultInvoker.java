@@ -21,14 +21,16 @@ public class DefaultInvoker implements Invoker {
 
     public DefaultInvoker() {
         List<LifeCycleManager> managers = ExtensionLoaders.
-                getExtensionLoader(LifeCycleManager.class).getExtensions();
+                                                                  getExtensionLoader(LifeCycleManager.class)
+                                                          .getExtensions();
         if (managers.size() == 1) {
             lifeCycleManager = managers.get(0);
         } else {
             throw new RuntimeException("LifeCycleManager more than one");
         }
         List<WebComponentMapping> mappings = ExtensionLoaders.
-                getExtensionLoader(WebComponentMapping.class).getExtensions();
+                                                                     getExtensionLoader(WebComponentMapping.class)
+                                                             .getExtensions();
         if (managers.size() == 1) {
             webComponentMapping = mappings.get(0);
         } else {
@@ -38,7 +40,8 @@ public class DefaultInvoker implements Invoker {
 
     public void invoke(RequestContext ctx) throws IOException {
         WebComponent webComponent = lifeCycleManager.
-                loadWebComponent(webComponentMapping.map(ctx.getRequestUri()));
+                                                            loadWebComponent(
+                                                                    webComponentMapping.map(ctx.getRequestUri()));
         webComponent.onRequest(ctx);
     }
 }

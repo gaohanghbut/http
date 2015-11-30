@@ -11,7 +11,8 @@ public class LinkedFilter implements Filter {
     private final Filter current;
     private final Filter next;
 
-    public LinkedFilter(Filter current, Filter next) {
+    public LinkedFilter(Filter current,
+                        Filter next) {
         this.current = current;
         this.next = next;
     }

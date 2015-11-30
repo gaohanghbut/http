@@ -13,11 +13,14 @@ public class PropertiesWebComponentMapping implements WebComponentMapping {
     private final Map<String, Class<?>> mappings;
 
     public PropertiesWebComponentMapping() {
-        this.mappings = ApplicationConfiguration.getInstance().getWebComponentMappings();
+        this.mappings = ApplicationConfiguration.getInstance()
+                                                .getWebComponentMappings();
     }
 
     public Class<?> map(String resource) {
         Class<?> type = mappings.get(resource);
-        return type == null ? ResourceWebComponent.class : type;
+        return type == null ?
+               ResourceWebComponent.class :
+               type;
     }
 }

@@ -19,13 +19,15 @@ public class HttpGetRequestContext extends NettyRequestContext {
 
     private String resource;
 
-    HttpGetRequestContext(HttpRequest request, Channel channel) {
+    HttpGetRequestContext(HttpRequest request,
+                          Channel channel) {
         super(request, channel);
         decoder = new QueryStringDecoder(request.getUri());
     }
 
     public String getParameter(String name) {
-        List<String> params = decoder.parameters().get(name);
+        List<String> params = decoder.parameters()
+                                     .get(name);
         if (params == null || params.size() == 0) {
             return null;
         }
@@ -36,8 +38,8 @@ public class HttpGetRequestContext extends NettyRequestContext {
         if (resource != null) {
             return resource;
         }
-        String uri = getRequest().getUri();
-        int index = uri.indexOf('?');
+        String uri   = getRequest().getUri();
+        int    index = uri.indexOf('?');
         if (index < 0) {
             resource = uri;
         } else {

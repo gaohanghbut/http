@@ -7,5 +7,6 @@ import com.qunar.hotel.manager.ServerLifeCycleListener;
  * Created by hang.gao on 2015/6/9.
  */
 public interface ServerFactory {
-    Server createServer(Configuration configuration, ServerLifeCycleListener listener);
+    Server createServer(Configuration configuration,
+                        ServerLifeCycleListener listener);
 }

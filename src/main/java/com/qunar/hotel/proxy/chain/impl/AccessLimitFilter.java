@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AccessLimitFilter implements Filter {
     private Map<String, Long> limitMap = new ConcurrentHashMap<String, Long>();
+
     public boolean doFilter(RequestContext ctx) throws IOException {
         Long time = limitMap.get(ctx.getRemoteAddress());
         if (time == null) {

@@ -21,15 +21,15 @@ public class DefaultEventDispatcher implements EventDispacher {
 
     private volatile boolean frozen;
 
+    public void addRequestListeners(List<ListenerWrapper<RequestListener>> listeners) {
+        checkState();
+        requestListeners = listeners;
+    }
+
     private void checkState() {
         if (frozen) {
             throw new IllegalStateException("the dispacher has been frozed");
         }
-    }
-
-    public void addRequestListeners(List<ListenerWrapper<RequestListener>> listeners) {
-        checkState();
-        requestListeners = listeners;
     }
 
     public void addApplicationListeners(List<ListenerWrapper<ApplicationListener>> listeners) {
@@ -38,7 +38,7 @@ public class DefaultEventDispatcher implements EventDispacher {
 
     public void fireRequestStart(final RequestContext ctx) {
         for (final ListenerWrapper<RequestListener> requestListener : requestListeners) {
-            if (!requestListener.sync) {
+            if (! requestListener.sync) {
                 exec.submit(new Runnable() {
                     public void run() {
                         requestListener.listener.onRequestStart(ctx);
@@ -55,7 +55,7 @@ public class DefaultEventDispatcher implements EventDispacher {
 
     public void fireRequestEnd(final RequestContext ctx) {
         for (final ListenerWrapper<RequestListener> requestListener : requestListeners) {
-            if (!requestListener.sync) {
+            if (! requestListener.sync) {
                 exec.submit(new Runnable() {
                     public void run() {
                         requestListener.listener.onRequestEnd(ctx);
@@ -72,7 +72,7 @@ public class DefaultEventDispatcher implements EventDispacher {
 
     public void fireApplicationInited() {
         for (final ListenerWrapper<ApplicationListener> applicationListener : applicationListeners) {
-            if (!applicationListener.sync) {
+            if (! applicationListener.sync) {
                 exec.submit(new Runnable() {
                     public void run() {
                         applicationListener.listener.onApplicationInit();
@@ -89,7 +89,7 @@ public class DefaultEventDispatcher implements EventDispacher {
 
     public void fireApplicationDestroyed() {
         for (final ListenerWrapper<ApplicationListener> applicationListener : applicationListeners) {
-            if (!applicationListener.sync) {
+            if (! applicationListener.sync) {
                 exec.submit(new Runnable() {
                     public void run() {
                         applicationListener.listener.onApplicationDestroy();

@@ -10,10 +10,9 @@ import java.util.Map;
  */
 public class DefaultLifeCycleManager implements LifeCycleManager {
 
+    private final Object wrappersLock = new Object();
     private Map<Class<?>, WebComponentWrapper> wrappers =
             new HashMap<Class<?>, WebComponentWrapper>();
-
-    private final Object wrappersLock = new Object();
 
     public void destroy() {
         for (WebComponentWrapper webComponentWrapper : wrappers.values()) {
@@ -22,9 +21,9 @@ public class DefaultLifeCycleManager implements LifeCycleManager {
     }
 
     public WebComponent loadWebComponent(Class<?> type) {
-        if (!wrappers.containsKey(type)) {
+        if (! wrappers.containsKey(type)) {
             synchronized (wrappersLock) {
-                if (!wrappers.containsKey(type)) {
+                if (! wrappers.containsKey(type)) {
                     try {
                         WebComponentWrapper wrapper =
                                 new WebComponentWrapper((WebComponent) type.newInstance());
@@ -36,7 +35,8 @@ public class DefaultLifeCycleManager implements LifeCycleManager {
                 }
             }
         }
-        return wrappers.get(type).getWebComponent();
+        return wrappers.get(type)
+                       .getWebComponent();
     }
 
     public void recycleWebComponent(WebComponent component) {

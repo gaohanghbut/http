@@ -7,7 +7,6 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.util.Map;
 
 /**
@@ -15,9 +14,18 @@ import java.util.Map;
  */
 public abstract class NettyRequestContext extends AbstractRequestContext {
 
+    private final HttpRequest request;
+    private final Channel channel;
     private HttpResponseStatus responseStatus;
 
-    public static NettyRequestContext from(HttpRequest req, Channel channel) {
+    protected NettyRequestContext(HttpRequest request,
+                                  Channel channel) {
+        this.request = request;
+        this.channel = channel;
+    }
+
+    public static NettyRequestContext from(HttpRequest req,
+                                           Channel channel) {
         if (req.getMethod() == HttpMethod.POST) {
             return new HttpPostRequestContext(req, channel);
         } else if (req.getMethod() == HttpMethod.GET) {
@@ -26,24 +34,18 @@ public abstract class NettyRequestContext extends AbstractRequestContext {
         return null;
     }
 
-    private final HttpRequest request;
-
-    private final Channel channel;
-
-    protected NettyRequestContext(HttpRequest request, Channel channel) {
-        this.request = request;
-        this.channel = channel;
-    }
-
     protected void setAttachments(Map<String, Object> attachments) {
         this.attachments = attachments;
     }
 
     @Override
     public String getRemoteAddress() {
-        return ((InetSocketAddress) channel.remoteAddress()).getAddress().getHostAddress();
+        return ((InetSocketAddress) channel.remoteAddress()).getAddress()
+                                                            .getHostAddress();
     }
-    public void error(int code, String msg) {
+
+    public void error(int code,
+                      String msg) {
         super.error(code, msg);
         responseStatus = HttpResponseStatus.valueOf(code);
     }

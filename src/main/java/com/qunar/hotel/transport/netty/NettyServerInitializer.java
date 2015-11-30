@@ -22,9 +22,11 @@ public class NettyServerInitializer extends ChannelInitializer {
     protected void initChannel(Channel ch) throws Exception {
         EventExecutorGroup exec = new DefaultEventExecutorGroup(configuration.getApplicationThreadCount());
 
-        ch.pipeline().addLast(exec, new HttpServerCodec(configuration.getMaxInitialLineLength(),
-                                                        configuration.getMaxHeaderSize(),
-                                                        configuration.getMaxChunkSize()));
-        ch.pipeline().addLast(exec, new NettyChannelHandler(configuration.getRequestHandler()));
+        ch.pipeline()
+          .addLast(exec, new HttpServerCodec(configuration.getMaxInitialLineLength(),
+                                             configuration.getMaxHeaderSize(),
+                                             configuration.getMaxChunkSize()));
+        ch.pipeline()
+          .addLast(exec, new NettyChannelHandler(configuration.getRequestHandler()));
     }
 }

@@ -15,11 +15,12 @@ public interface RequestContext {
 
     void writeString(String content) throws IOException;
 
-    void error(int code, String msg);
-
-    void setContentType(String contentType);
+    void error(int code,
+               String msg);
 
     boolean isError();
 
     String getContentType();
+
+    void setContentType(String contentType);
 }

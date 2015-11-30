@@ -12,17 +12,19 @@ public class Bootstrap {
 
     private ServerManager serverManager;
 
-    public Bootstrap config(Configuration configuration) {
-        this.configuration = configuration;
-        return this;
+    public static void main(String[] args) {
+        new Bootstrap().config(new SimpleConfiguration())
+                       .bind();
     }
 
     public void bind() {
-        serverManager = ExtensionLoaders.getExtensionLoader(ServerManager.class).getExtension();
+        serverManager = ExtensionLoaders.getExtensionLoader(ServerManager.class)
+                                        .getExtension();
         serverManager.serverStart(configuration);
     }
 
-    public static void main(String[] args) {
-        new Bootstrap().config(new SimpleConfiguration()).bind();
+    public Bootstrap config(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
     }
 }

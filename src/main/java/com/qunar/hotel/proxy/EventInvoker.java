@@ -10,12 +10,13 @@ import java.io.IOException;
  * Created by hang.gao on 2015/6/10.
  */
 public class EventInvoker implements Invoker {
-    private final Invoker targetInvoker;
+    private final Invoker        targetInvoker;
     private final EventDispacher eventDispacher;
 
     public EventInvoker(Invoker targetInvoker) {
         this.targetInvoker = targetInvoker;
-        this.eventDispacher = ExtensionLoaders.getExtensionLoader(EventDispacher.class).getExtension();
+        this.eventDispacher = ExtensionLoaders.getExtensionLoader(EventDispacher.class)
+                                              .getExtension();
     }
 
     public void invoke(RequestContext ctx) throws IOException {

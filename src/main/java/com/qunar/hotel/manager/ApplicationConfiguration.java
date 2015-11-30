@@ -11,7 +11,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -29,11 +33,11 @@ public class ApplicationConfiguration {
 
     private List<ListenerWrapper<ApplicationListener>> applicationListener = new ArrayList<ListenerWrapper<ApplicationListener>>();
 
-    public static ApplicationConfiguration getInstance() {
-        return Holder.instance;
+    private ApplicationConfiguration() {
     }
 
-    private ApplicationConfiguration() {
+    public static ApplicationConfiguration getInstance() {
+        return Holder.instance;
     }
 
     private void init() {
@@ -98,6 +102,7 @@ public class ApplicationConfiguration {
 
     private static final class Holder {
         private static final ApplicationConfiguration instance;
+
         static {
             ApplicationConfiguration cfg = new ApplicationConfiguration();
             cfg.init();

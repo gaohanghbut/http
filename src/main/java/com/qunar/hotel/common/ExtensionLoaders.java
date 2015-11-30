@@ -11,20 +11,20 @@ import java.util.concurrent.ConcurrentMap;
  * Created by hang.gao on 2015/6/9.
  */
 public final class ExtensionLoaders {
+    private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> extensionLoaderMap =
+            new ConcurrentHashMapV8<Class<?>, ExtensionLoader<?>>();
+    private static final Object extensionMapLock = new Object();
+
     private ExtensionLoaders() {
     }
 
-    private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> extensionLoaderMap =
-            new ConcurrentHashMapV8<Class<?>, ExtensionLoader<?>>();
-
-    private static final Object extensionMapLock = new Object();
-
-    public static <T>ExtensionLoader<T> getExtensionLoader(Class<T> type) {
-        if (!extensionLoaderMap.containsKey(type)) {
+    public static <T> ExtensionLoader<T> getExtensionLoader(Class<T> type) {
+        if (! extensionLoaderMap.containsKey(type)) {
             synchronized (extensionMapLock) {
-                if (!extensionLoaderMap.containsKey(type)) {
+                if (! extensionLoaderMap.containsKey(type)) {
                     extensionLoaderMap.put(type,
-                            new DefaultExtensionLoader<T>(type, Thread.currentThread().getContextClassLoader()));
+                                           new DefaultExtensionLoader<T>(type, Thread.currentThread()
+                                                                                     .getContextClassLoader()));
                 }
             }
         }
@@ -37,7 +37,8 @@ public final class ExtensionLoaders {
 
         private volatile List<T> cache;
 
-        public DefaultExtensionLoader(Class<T> type, ClassLoader classLoader) {
+        public DefaultExtensionLoader(Class<T> type,
+                                      ClassLoader classLoader) {
             serviceLoader = ServiceLoader.load(type, classLoader);
         }
 

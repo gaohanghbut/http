@@ -5,5 +5,6 @@ package com.qunar.hotel.manager;
  */
 public interface ServerLifeCycleListener {
     void beforeServerStop();
+
     void afterServerStart();
 }

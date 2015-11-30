@@ -14,7 +14,7 @@ public class RegisterComponent implements WebComponent {
     }
 
     public void onRequest(RequestContext ctx) throws IOException {
-        String userid = ctx.getParameter("userid");
+        String userid   = ctx.getParameter("userid");
         String username = ctx.getParameter("username");
         ctx.writeString("<h1>userid: " + userid + "</h1>");
         ctx.writeString("<h1>username: " + username + "</h1>");

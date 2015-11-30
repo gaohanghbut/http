@@ -26,12 +26,8 @@ public class NettyChannelHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) {
-        ctx.flush();
-    }
-
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+    public void channelRead(ChannelHandlerContext ctx,
+                            Object msg) {
         if (msg instanceof HttpRequest) {
             NettyRequestContext requestContext = NettyRequestContext.from((HttpRequest) msg, ctx.channel());
             //handle request
@@ -40,36 +36,56 @@ public class NettyChannelHandler extends ChannelInboundHandlerAdapter {
             } catch (Throwable throwable) {
                 logger.error("handle request error", throwable);
                 StringBuilder sb = new StringBuilder("<h1>500</h1><br>");
-                sb.append(throwable.getClass().getName())
-                        .append(":")
-                        .append(throwable.getMessage())
-                        .append("<br>");
+                sb.append(throwable.getClass()
+                                   .getName())
+                  .append(":")
+                  .append(throwable.getMessage())
+                  .append("<br>");
                 for (StackTraceElement stackTrace : throwable.getStackTrace()) {
-                    sb.append(stackTrace).append("<br>");
+                    sb.append(stackTrace)
+                      .append("<br>");
                 }
                 DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-                        HttpResponseStatus.INTERNAL_SERVER_ERROR, Unpooled.wrappedBuffer(sb.toString().getBytes()));
-                response.headers().set("content-type", requestContext.getContentType());
-                response.headers().set("content-length", response.content().readableBytes());
-                ctx.write(response).addListener(ChannelFutureListener.CLOSE);
+                                                                               HttpResponseStatus.INTERNAL_SERVER_ERROR,
+                                                                               Unpooled.wrappedBuffer(sb.toString()
+                                                                                                        .getBytes()));
+                response.headers()
+                        .set("content-type", requestContext.getContentType());
+                response.headers()
+                        .set("content-length", response.content()
+                                                       .readableBytes());
+                ctx.write(response)
+                   .addListener(ChannelFutureListener.CLOSE);
                 return;
             }
             DefaultFullHttpResponse response;
-            if (!requestContext.isError()) {
+            if (! requestContext.isError()) {
                 response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-                        HttpResponseStatus.OK, Unpooled.wrappedBuffer(requestContext.getResponseContent()));
+                                                       HttpResponseStatus.OK,
+                                                       Unpooled.wrappedBuffer(requestContext.getResponseContent()));
             } else {
                 response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-                        requestContext.getResponseStatus(), Unpooled.wrappedBuffer(requestContext.getResponseContent()));
+                                                       requestContext.getResponseStatus(),
+                                                       Unpooled.wrappedBuffer(requestContext.getResponseContent()));
             }
-            response.headers().set("content-type", requestContext.getContentType());
-            response.headers().set("content-length", response.content().readableBytes());
-            ctx.write(response).addListener(ChannelFutureListener.CLOSE);
+            response.headers()
+                    .set("content-type", requestContext.getContentType());
+            response.headers()
+                    .set("content-length", response.content()
+                                                   .readableBytes());
+            ctx.write(response)
+               .addListener(ChannelFutureListener.CLOSE);
         }
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+    public void channelReadComplete(ChannelHandlerContext ctx) {
+        ctx.flush();
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx,
+                                Throwable cause) {
         cause.printStackTrace();
         ctx.close();
     }
