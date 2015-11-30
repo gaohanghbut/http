@@ -23,7 +23,7 @@ public class NettyServerInitializer extends ChannelInitializer {
         EventExecutorGroup exec = new DefaultEventExecutorGroup(configuration.getApplicationThreadCount());
 
         ch.pipeline().addLast(exec, new HttpServerCodec(configuration.getMaxInitialLineLength(),
-                                                        configuration.getMaxheaderSize(),
+                                                        configuration.getMaxHeaderSize(),
                                                         configuration.getMaxChunkSize()));
         ch.pipeline().addLast(exec, new NettyChannelHandler(configuration.getRequestHandler()));
     }

@@ -15,7 +15,7 @@ public class SimpleConfiguration implements Configuration {
         return 2048;
     }
 
-    public int getMaxheaderSize() {
+    public int getMaxHeaderSize() {
         return 2048;
     }
 

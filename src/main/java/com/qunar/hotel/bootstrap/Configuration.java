@@ -11,7 +11,7 @@ public interface Configuration {
 
     int getMaxInitialLineLength();
 
-    int getMaxheaderSize();
+    int getMaxHeaderSize();
 
     int getMaxChunkSize();
 
