@@ -1,0 +1,2 @@
+com.qunar.hotel.proxy.chain.impl.AccessLogFilter
+com.qunar.hotel.proxy.chain.impl.AccessLimitFilter
